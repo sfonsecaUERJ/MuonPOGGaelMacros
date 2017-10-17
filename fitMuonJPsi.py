@@ -20,6 +20,16 @@ def FillNumDen(num, den):
         process.TnP_MuonID.Expressions.Loose_noIPVar  = cms.vstring("Loose_noIPVar", "PF==1", "PF")
         process.TnP_MuonID.Cuts.Loose_noIP = cms.vstring("Loose_noIP", "Loose_noIPVar", "0.5")
 
+    elif num == "softid":
+          process.TnP_MuonID.Categories.TMOST = cms.vstring("TMOneStationTight", "dummy[pass=1,fail=0]") 
+          process.TnP_MuonID.Variables.tkTrackerLay = cms.vstring("track.hitPattern.trackerLayersWithMeasurement", "-1", "999", "") 
+          process.TnP_MuonID.Variables.tkPixelLay = cms.vstring("track.hitPattern.pixelLayersWithMeasurement", "-1", "999", "")
+          process.TnP_MuonID.Variables.dzPV = cms.vstring("dzPV", "-1000", "1000", "")
+          process.TnP_MuonID.Variables.dB = cms.vstring("dB", "-1000", "1000", "")
+	  process.TnP_MuonID.Categories.Soft2016 = cms.vstring("Soft Id. Muon", "dummy[pass=1,fail=0]")
+          process.TnP_MuonID.Expressions.Soft2016CutVar = cms.vstring("Soft2016Cut", "TMOST == 1 && tkTrackerLay > 5 && tkPixelLay > 0 && abs(dzPV) < 20. && abs(dB) < 0.3","TMOST", "tkTrackerLay", "tkPixelLay", "dzPV", "dB")
+          process.TnP_MuonID.Cuts.Soft2016Cut = cms.vstring("Soft2016Cut", "Soft2016CutVar", "0.5")
+          
     elif num == "mediumid":
         process.TnP_MuonID.Categories.Medium  = cms.vstring("Medium Id.", "dummy[pass=1,fail=0]")
         process.TnP_MuonID.Expressions.Medium_noIPVar= cms.vstring("Medium_noIPVar", "Medium==1", "Medium")
@@ -94,6 +104,16 @@ def FillNumDen(num, den):
     #DEN
     if den == "looseid":
         process.TnP_MuonID.Categories.PF  = cms.vstring("PF Muon", "dummy[pass=1,fail=0]")
+
+    elif den == "softid":
+          process.TnP_MuonID.Categories.TMOST = cms.vstring("TMOneStationTight", "dummy[pass=1,fail=0]")
+          process.TnP_MuonID.Variables.tkTrackerLay = cms.vstring("track.hitPattern.trackerLayersWithMeasurement", "-1", "999", "")
+          process.TnP_MuonID.Variables.tkPixelLay = cms.vstring("track.hitPattern.pixelLayersWithMeasurement", "-1", "999", "")
+          process.TnP_MuonID.Variables.dzPV = cms.vstring("dzPV", "-1000", "1000", "")
+          process.TnP_MuonID.Variables.dB = cms.vstring("dB", "-1000", "1000", "")
+          process.TnP_MuonID.Categories.Soft2016 = cms.vstring("Soft Id. Muon", "dummy[pass=1,fail=0]")
+          process.TnP_MuonID.Expressions.Soft2016CutVar = cms.vstring("Soft2016CutVar", "TMOST == 1 && tkTrackerLay > 5 && tkPixelLay > 0 && abs(dzPV) < 20. && abs(dB) < 0.3","TMOST", "tkTrackerLay", "tkPixelLay", "dzPV", "dB")
+          process.TnP_MuonID.Cuts.Soft2016Cut = cms.vstring("Soft2016Cut", "Soft2016CutVar", "0.5")
     elif den == "mediumid":
         process.TnP_MuonID.Categories.Medium = cms.vstring("Medium Id.", "dummy[pass=1,fail=0]")
     elif den == "tightid":
@@ -168,6 +188,8 @@ def FillBin(par):
     if den == "gentrack": pass
     elif den == "looseid": DEN.PF = cms.vstring("pass")
     elif den == "mediumid": DEN.Medium = cms.vstring("pass")
+    elif den == "softid": DEN.Soft2016 = cms.vstring("pass")
+
     elif den == "tightid": 
         DEN.Tight2012 = cms.vstring("pass")
         DEN.dzPV = cms.vdouble(-0.5, 0.5)
@@ -213,10 +235,10 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.source = cms.Source("EmptySource")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
-if not num  in ['looseid', 'mediumid', 'tightid', 'tightidhww', 'puppiIso', 'puppiIsoNoLep', 'combpuppiIso','muCleanerIII', 'muCleanerIV', 'highptid', 'looseiso', 'tightiso', 'tklooseiso']:
-    print '@ERROR: num should be in ',['looseid', 'mediumid', 'tightid', 'tightidhww', 'puppiIso', 'puppiIsoNoLep', 'combpuppiIso', 'muCleanerIII', 'muCleanerIV', 'highptid', 'looseiso', 'tightiso', 'tklooseiso'], 'You used', num, '.Abort'
+if not num  in ['looseid','softid', 'mediumid', 'tightid', 'tightidhww', 'puppiIso', 'puppiIsoNoLep', 'combpuppiIso','muCleanerIII', 'muCleanerIV', 'highptid', 'looseiso', 'tightiso', 'tklooseiso']:
+    print '@ERROR: num should be in ',['looseid','softid', 'mediumid', 'tightid', 'tightidhww', 'puppiIso', 'puppiIsoNoLep', 'combpuppiIso', 'muCleanerIII', 'muCleanerIV', 'highptid', 'looseiso', 'tightiso', 'tklooseiso'], 'You used', num, '.Abort'
     sys.exit()
-if not den in ['looseid', 'mediumid', 'tightid', 'tightidhww', 'highptid', 'gentrack']:
+if not den in ['looseid','softid', 'mediumid', 'tightid', 'tightidhww', 'highptid', 'gentrack']:
     print '@ERROR: den should be',['looseid', 'mediumid', 'tightid', 'tightidhww', 'highptid'], 'You used', den, '.Abort'
     sys.exit()
 if not par in  ['pt', 'eta', 'vtx', 'pt_eta', 'newpt', 'newpt_eta', 'tag_instLumi', 'pair_deltaR']:
@@ -329,14 +351,15 @@ if sample == "data_all":
     process.TnP_MuonID = Template.clone(                                                                                                 
        InputFileNames = cms.vstring(                                                                                                    
            #IMPORTANT: Only use this dataset for test. Need to skim to produce the final efficiency studies
-           #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_299649_GoldenJSON.root',
+           #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_302343_GoldenJSON.root'
+	   #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_299649_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv2_294927_to_299649_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv1_294927_to_299649_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv2_299650_to_300575_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv2_300576_to_301141_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_300576_to_301141_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301142_to_301567_GoldenJSON.root',
-           #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301568_to_301997_GoldenJSON.root'
+           'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301568_to_301997_GoldenJSON.root'
             ),                                                                                                                           
         InputTreeName = cms.string("fitter_tree"),                                                                                       
         InputDirectoryName = cms.string("tpTree"),                                                                                       
@@ -349,15 +372,16 @@ if sample == "mc_all":
     process.TnP_MuonID = Template.clone(                                                                                                 
        InputFileNames = cms.vstring(                            
            #IMPORTANT: Only use this dataset for test. Need to skim and reweight in NVertices to produce the final efficiency studies
-           # 'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2016/80X_v5b_jpsi/some_mc/tnpJPsi_MC_JpsiPt8_TuneCUEP8M1_13TeV_pythia8.root', 
+            '/eos/user/s/sfonseca/Jpsi2017TnPTree/tnpJPsi_MC_JpsiPt8_TuneCUEP8M1_13TeV_pythia8_VtxWeight_Run2017B.root', 
            #IMPORTANT: Only use this dataset for test. Need reweight in NVertices to produce the final efficiency studies
-            'tnpJPsi_MC_JpsiPt8_TuneCUEP8M1_13TeV_pythia8.root'
+           # 'tnpJPsi_MC_JpsiPt8_TuneCUEP8M1_13TeV_pythia8.root'
             ),                                                                                                                           
         InputTreeName = cms.string("fitter_tree"),                                                                                       
         InputDirectoryName = cms.string("tpTree"),                                                                                       
         OutputFileName = cms.string("TnP_MuonISO_%s.root" % scenario),                                                                   
         Efficiencies = cms.PSet(),                                                                                                       
         )  
+
 
 
 
@@ -398,9 +422,9 @@ if scenario == "mc":
 BIN = cms.PSet(
         )
 
-Num_dic = {'looseid':'LooseID','mediumid':'MediumID','tightid':'TightID','tightidhww':'TightIDHWW','puppiIso':'PuppiIso','puppiIsoNoLep':'PuppiIsoNoLep','combpuppiIso':'combPuppiIso', 'muCleanerIII':'MuonCleanerIII', 'muCleanerIV':'MuonCleanerIV', 'highptid':'HighPtID','looseiso':'LooseRelIso','tightiso':'TightRelIso','tklooseiso':'LooseRelTkIso'}
-Den_dic = {'gentrack':'genTracks','looseid':'LooseID','mediumid':'MediumID','tightid':'TightIDandIPCut','tightidhww':'TightIDHWW','highptid':'HighPtIDandIPCut'}
-Sel_dic = {'looseid':'Loose_noIP','mediumid':'Medium_noIP','tightid':'Tight2012_zIPCut','tightidhww':'Tight2012_zIPdBCut','puppiIso':'puppiIsoCut', 'puppiIsoNoLep':'puppiIsoNoLepCut','combpuppiIso':'combpuppiIsoCut','muCleanerIII':'TM_cleanMuonIIICut', 'muCleanerIV':'TM_cleanMuonIVCut', 'highptid':'HighPt_zIPCut','looseiso':'LooseIso4','tightiso':'TightIso4','tklooseiso':'LooseTkIso3'}
+Num_dic = {'looseid':'LooseID','softid':'SoftID','mediumid':'MediumID','tightid':'TightID','tightidhww':'TightIDHWW','puppiIso':'PuppiIso','puppiIsoNoLep':'PuppiIsoNoLep','combpuppiIso':'combPuppiIso', 'muCleanerIII':'MuonCleanerIII', 'muCleanerIV':'MuonCleanerIV', 'highptid':'HighPtID','looseiso':'LooseRelIso','tightiso':'TightRelIso','tklooseiso':'LooseRelTkIso'}
+Den_dic = {'gentrack':'genTracks','looseid':'LooseID','softid':'SoftID','mediumid':'MediumID','tightid':'TightIDandIPCut','tightidhww':'TightIDHWW','highptid':'HighPtIDandIPCut'}
+Sel_dic = {'looseid':'Loose_noIP','softid':'Soft2016Cut','mediumid':'Medium_noIP','tightid':'Tight2012_zIPCut','tightidhww':'Tight2012_zIPdBCut','puppiIso':'puppiIsoCut', 'puppiIsoNoLep':'puppiIsoNoLepCut','combpuppiIso':'combpuppiIsoCut','muCleanerIII':'TM_cleanMuonIIICut', 'muCleanerIV':'TM_cleanMuonIVCut', 'highptid':'HighPt_zIPCut','looseiso':'LooseIso4','tightiso':'TightIso4','tklooseiso':'LooseTkIso3'}
 
 #Par_dic = {'eta':'eta', 'pt':}
 
@@ -457,7 +481,7 @@ for ID, ALLBINS in ID_BINS:
     module = process.TnP_MuonID.clone(OutputFileName = cms.string(_output + "/TnP_MC_%s.root" % (X)))
     #save the fitconfig in the plot directory
     shutil.copyfile(os.getcwd()+'/fitMuonJPsi.py',_output+'/fitMuonJPsi.py')
-    shape = cms.vstring("CBPlusExpo")
+    shape = cms.vstring("CBPlusExpo") # J/Psi Fit likes 2016 studies for low pT 
 
 
 
