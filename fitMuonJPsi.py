@@ -351,7 +351,7 @@ if sample == "data_all":
     process.TnP_MuonID = Template.clone(                                                                                                 
        InputFileNames = cms.vstring(                                                                                                    
            #IMPORTANT: Only use this dataset for test. Need to skim to produce the final efficiency studies
-           #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_302343_GoldenJSON.root'
+           '/eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_302343_GoldenJSON.root'
 	   #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv1_294927_to_299649_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunB/TnPTreeJPsi_Charmonium_Run2017Bv2_294927_to_299649_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv1_294927_to_299649_GoldenJSON.root',
@@ -359,7 +359,8 @@ if sample == "data_all":
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv2_300576_to_301141_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_300576_to_301141_GoldenJSON.root',
            #'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301142_to_301567_GoldenJSON.root',
-           'root://eoscms//eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301568_to_301997_GoldenJSON.root'
+           #'/eos/cms/store/group/phys_muon/TagAndProbe/Run2017/92X-v2_TrkIter/JPsi/RunC/TnPTreeJPsi_Charmonium_Run2017Cv3_301568_to_301997_GoldenJSON.root'
+           #'/eos/cms/store/group/phys_muon/TagAndProbe/Run2016/80X_v5b_jpsi/data//tnpJPsi_Data_Run2016B_part1.root'
             ),                                                                                                                           
         InputTreeName = cms.string("fitter_tree"),                                                                                       
         InputDirectoryName = cms.string("tpTree"),                                                                                       
